@@ -3,9 +3,11 @@ package io.github.girirajvyas.model;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
   // @Parameter(description = "User ID", example = "john doe")
