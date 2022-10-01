@@ -21,4 +21,7 @@ public class AccountEntity {
   @Column(name = "AMOUNT")
   private BigDecimal amount;
   
+  @Column(name="MOBILE_NUMBER")
+  private Long mobileNumber;
+  
 }

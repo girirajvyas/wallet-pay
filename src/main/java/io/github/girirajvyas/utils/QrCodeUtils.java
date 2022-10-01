@@ -1,5 +1,6 @@
 package io.github.girirajvyas.utils;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,6 +15,7 @@ import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.client.j2se.MatrixToImageConfig;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
@@ -30,7 +32,8 @@ public class QrCodeUtils {
   }
 
   public static byte[] createQRCodeDefaultSize(String qrContent) {
-    return createQRCode(qrContent, 500, 500);
+    // return createQRCode(qrContent, 500, 500);
+    return createQRCodeColoured(qrContent, 500, 500, Color.BLUE, Color.GREEN);
   }
 
   public static byte[] createQRCode(String qrContent, int width, int height) {
@@ -39,6 +42,23 @@ public class QrCodeUtils {
       BitMatrix bitMatrix = qrCodeWriter.encode(qrContent, BarcodeFormat.QR_CODE, width, height);
       ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
       MatrixToImageWriter.writeToStream(bitMatrix, "PNG", byteArrayOutputStream);
+      return byteArrayOutputStream.toByteArray();
+    } catch (WriterException | IOException e) {
+      log.error(e.getMessage(), e);
+      return new byte[0];
+    }
+  }
+
+  public static byte[] createQRCodeColoured(String qrContent, int width, int height, Color onColor,
+      Color offColor) {
+    try {
+      QRCodeWriter qrCodeWriter = new QRCodeWriter();
+      BitMatrix bitMatrix = qrCodeWriter.encode(qrContent, BarcodeFormat.QR_CODE, width, height);
+      // Color is set here in ARGB value
+      log.info("QR code colours int value: {} , {}", onColor.getRGB(), offColor.getRGB());
+      MatrixToImageConfig conf = new MatrixToImageConfig(onColor.getRGB(), offColor.getRGB());
+      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+      MatrixToImageWriter.writeToStream(bitMatrix, "PNG", byteArrayOutputStream, conf);
       return byteArrayOutputStream.toByteArray();
     } catch (WriterException | IOException e) {
       log.error(e.getMessage(), e);
@@ -100,5 +120,14 @@ public class QrCodeUtils {
   private static String getFileNameWithJpegExtension(String fileName) {
     return fileName + ".jpeg";
   }
+
+  private static void getArgbColourCode() {
+    System.err.println("Color=" + new java.awt.Color(0, 0, 255, 0).getRGB());
+    // gives 255 as you expected - note that this is a fully transparent blue
+
+    System.err.println("Color=" + Color.RED.getRGB());
+    // gives -65536, as the alpha channel value is 255 making the int negative.
+  }
+
 
 }
