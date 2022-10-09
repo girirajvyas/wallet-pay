@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>io.github.girirajvyas</groupId>
-	<artifactId>wallet-pay</artifactId>
+	<groupId>io.github.girirajvyas.upi</groupId>
+	<artifactId>wallet</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>wallet-pay</name>
+	<name>wallet</name>
 	<description>Dummy Wallet app</description>
 
 	<properties>
